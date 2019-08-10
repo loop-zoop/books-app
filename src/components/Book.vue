@@ -8,10 +8,10 @@
     >
       <div class="card mb-3" >
         <div class="card-body">
-            <img :src="book.volumeInfo.imageLinks.smallThumbnail" alt="">
+            <img :src="book.volumeInfo.imageLinks.smallThumbnail" alt="small thumbnail">
           <p class="card-text"><b>Title:</b> {{book.volumeInfo.title}}</p>
-          <p class="card-text"><b>Author(s):</b> {{book.volumeInfo.authors.join()}}</p>
-          <p class="card-text"><b>Published Date:</b> {{book.volumeInfo.publishedDate}}</p>
+          <p class="card-text"><b>Author(s):</b> {{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'unknown'}}</p>
+          <p class="card-text"><b>Published Date:</b> {{stylizeDate(book.volumeInfo.publishedDate)}}</p>
           <a href="#" class="btn btn-primary">Order</a>
         </div>
       </div>
@@ -26,6 +26,20 @@ export default {
     return {
       title: "Book"
     };
+  },
+  methods: {
+    stylizeDate(date) {
+      if(!date) {
+        return 'unknown'
+      } else {
+        if(date.length > 4) {
+          return date.split('-').reverse().join('.')
+        }
+        else {
+          return date;
+        }
+      }
+    }
   }
 };
 </script>

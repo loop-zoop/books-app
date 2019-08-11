@@ -12,7 +12,11 @@
           <p class="card-text"><b>Title:</b> {{book.volumeInfo.title}}</p>
           <p class="card-text"><b>Author(s):</b> {{book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'unknown'}}</p>
           <p class="card-text"><b>Published Date:</b> {{stylizeDate(book.volumeInfo.publishedDate)}}</p>
-          <a href="#" class="btn btn-primary">Order</a>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            @click="setCurrentOrderIndex(index)"
+          >Order</button>
         </div>
       </div>
     </div>
@@ -39,6 +43,10 @@ export default {
           return date;
         }
       }
+    },
+    setCurrentOrderIndex(index) {
+      this.$store.state.orderIndex = index
+      this.$emit('open-modal')
     }
   }
 };

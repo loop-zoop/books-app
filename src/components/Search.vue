@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <form class="form-inline">
       <input
         class="form-control mr-sm-2 col-sm-10"
@@ -14,7 +13,6 @@
         @click="fetchBooks(keyWord)"
       >Send</button>
     </form>
-  </div>
 </template>
 
 <script>

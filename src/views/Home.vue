@@ -7,7 +7,8 @@
           <CartButton />
         </nav>
       </header>
-      <Book/>
+      <Book @open-modal="openModal" />
+      <Modal @close-modal="closeModal" v-if="showModal" />
     </div>
   </div>
 </template>
@@ -16,17 +17,28 @@
 import Search from "../components/Search";
 import CartButton from "../components/CartButton";
 import Book from "../components/Book";
+import Modal from "../components/Modal";
 
 export default {
   data() {
     return {
       title: this.$route.name,
+      showModal: false
     };
+  },
+  methods: {
+    openModal() {
+      this.showModal = true
+    },
+    closeModal() {
+      this.showModal = false
+    }
   },
   components: {
     Search,
     CartButton,
-    Book
+    Book,
+    Modal
   }
 };
 </script>

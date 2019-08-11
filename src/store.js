@@ -6,7 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     api_url: process.env.VUE_APP_GOOGLE_BOOKS_API,
-    books: []
+    books: [],
+    orders: [],
+    orderIndex: Number
   },
   mutations: {
     fetchBooks(state, key_word) {

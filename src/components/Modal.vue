@@ -22,24 +22,42 @@
         <form class="col-sm-7">
           <div class="form-group">
             <label>Name</label>
-            <input type="text" class="form-control" placeholder="Enter name">
-            <small class="form-text text-muted">...</small>
+            <input
+              type="text"
+              :class="['form-control', { 'is-valid': isNameValid }]"
+              placeholder="Enter name"
+              v-model="form.name"
+            >
+            <small
+              class="form-text text-muted"
+              v-show="!nameValidationStatus"
+            >Name should be at least 2 letters long</small>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" class="form-control" placeholder="Enter email">
-            <small class="form-text text-muted">...</small>
+            <input
+              type="email"
+              :class="['form-control', { 'is-valid': isEmailValid }]"
+              placeholder="Enter email"
+              v-model="form.email"
+            >
+            <small class="form-text text-muted" v-show="!emailValidationStatus">Your email is invalid</small>
           </div>
           <div class="form-group">
             <label>Phone</label>
-            <input type="text" class="form-control" placeholder="+380...">
-            <small class="form-text text-muted">...</small>
+            <input
+              type="text"
+              :class="['form-control', { 'is-valid': isPhoneValid }]"
+              placeholder="+380..."
+              v-model="form.phone"
+            >
+            <small class="form-text text-muted" v-show="!phoneValidationStatus">Your phone is invalid</small>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
-        <button type="button" class="btn btn-primary">Order</button>
+        <button type="button" class="btn btn-primary" @click="validateData">Order</button>
       </div>
     </div>
   </div>
@@ -48,11 +66,76 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      form: {
+        name: "",
+        email: "",
+        phone: ""
+      },
+      nameValidationStatus: false,
+      emailValidationStatus: false,
+      phoneValidationStatus: false
+    };
+  },
+  computed: {
+    isNameValid() {
+      if (this.form.name !== "" && this.form.name.length >= 2) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isEmailValid() {
+      if (
+        /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/.test(
+          this.form.email
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isPhoneValid() {
+      if (/^\+380\d{9}$/.test(this.form.phone)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     closeModal() {
       this.$emit("close-modal");
+    },
+    validateData() {
+      if (this.isNameValid) {
+        this.nameValidationStatus = true;
+      } else {
+        this.nameValidationStatus = false;
+      }
+
+      if (this.isEmailValid) {
+        this.emailValidationStatus = true;
+      } else {
+        this.emailValidationStatus = false;
+      }
+
+      if (this.isPhoneValid) {
+        this.phoneValidationStatus = true;
+      } else {
+        this.phoneValidationStatus = false;
+      }
+
+        if (this.nameValidationStatus &&
+            this.emailValidationStatus &&
+            this.phoneValidationStatus) {
+        this.sendOrder()
+        this.$emit("close-modal");
+      }
+    },
+    sendOrder() {
+      console.log('sent!')
     }
   }
 };
@@ -71,9 +154,12 @@ export default {
   .modal-window {
     background: #fff;
     width: 70%;
-    margin: 15% auto;
+    margin: 5% auto;
     form {
-        text-align: left;
+      text-align: left;
+      small {
+        color: red;
+      }
     }
   }
 }

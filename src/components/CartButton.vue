@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="mr-sm-5"> {{msg}} </span>
+    <span class="mr-sm-5"> {{calcOrders}} </span>
     <a class="btn btn-success" id="cart-button">
       <svg
         id="i-cart"
@@ -26,8 +26,15 @@
 export default {
   data() {
     return {
-      msg: "Your cart is empty"
+      ordersMessage: "Your cart is empty"
     };
+  },
+  computed: {
+    calcOrders() {
+      return `Added ${this.$store.state.orders.items.length} items that cost ${this.$store.state.orders.totalPrice}UAH total`
+    }
+  },
+  methods: {
   }
 };
 </script>

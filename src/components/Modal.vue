@@ -24,12 +24,12 @@
             <label>Name</label>
             <input
               type="text"
-              :class="['form-control', { 'is-valid': isNameValid }]"
+              :class="['form-control', { 'is-valid': isNameValid}]"
               placeholder="Enter name"
               v-model="form.name"
             >
             <small
-              class="form-text text-muted"
+              class="form-text"
               v-show="!nameValidationStatus"
             >Name should be at least 2 letters long</small>
           </div>
@@ -41,7 +41,10 @@
               placeholder="Enter email"
               v-model="form.email"
             >
-            <small class="form-text text-muted" v-show="!emailValidationStatus">Your email is invalid</small>
+            <small
+              class="form-text"
+              v-show="!emailValidationStatus"
+            >Your email is invalid</small>
           </div>
           <div class="form-group">
             <label>Phone</label>
@@ -51,7 +54,10 @@
               placeholder="+380..."
               v-model="form.phone"
             >
-            <small class="form-text text-muted" v-show="!phoneValidationStatus">Your phone is invalid</small>
+            <small
+              class="form-text"
+              v-show="!phoneValidationStatus"
+            >Your phone is invalid</small>
           </div>
         </form>
       </div>
@@ -64,7 +70,10 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
+  name: 'Modal',
   data() {
     return {
       form: {
@@ -72,9 +81,9 @@ export default {
         email: "",
         phone: ""
       },
-      nameValidationStatus: false,
-      emailValidationStatus: false,
-      phoneValidationStatus: false
+      nameValidationStatus: Boolean,
+      emailValidationStatus: Boolean,
+      phoneValidationStatus: Boolean
     };
   },
   computed: {
@@ -87,6 +96,7 @@ export default {
     },
     isEmailValid() {
       if (
+        this.form.email !== "" &&
         /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/.test(
           this.form.email
         )
@@ -97,7 +107,7 @@ export default {
       }
     },
     isPhoneValid() {
-      if (/^\+380\d{9}$/.test(this.form.phone)) {
+      if (this.form.phone !== "" && /^\+380\d{9}$/.test(this.form.phone)) {
         return true;
       } else {
         return false;
@@ -105,6 +115,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['calcPrices']),
     closeModal() {
       this.$emit("close-modal");
     },
@@ -127,15 +138,18 @@ export default {
         this.phoneValidationStatus = false;
       }
 
-        if (this.nameValidationStatus &&
-            this.emailValidationStatus &&
-            this.phoneValidationStatus) {
-        this.sendOrder()
+      if (
+        this.nameValidationStatus &&
+        this.emailValidationStatus &&
+        this.phoneValidationStatus
+      ) {
+        this.addOrder();
         this.$emit("close-modal");
       }
     },
-    sendOrder() {
-      console.log('sent!')
+    addOrder() {
+      this.$store.state.orders.items.push(this.$store.state.books[this.$store.state.orderIndex])
+      this.$store.dispatch('calcPrices')
     }
   }
 };
@@ -156,10 +170,10 @@ export default {
     width: 70%;
     margin: 5% auto;
     form {
-      text-align: left;
-      small {
-        color: red;
-      }
+        text-align: left;
+        .form-text {
+          color: red;
+        }
     }
   }
 }

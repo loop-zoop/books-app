@@ -9,6 +9,7 @@
       </header>
       <Book @open-modal="openModal" />
       <Modal @close-modal="closeModal" v-if="showModal" />
+      <Alert v-if="showAlert" />
     </div>
   </div>
 </template>
@@ -18,13 +19,19 @@ import Search from "../components/Search";
 import CartButton from "../components/CartButton";
 import Book from "../components/Book";
 import Modal from "../components/Modal";
+import Alert from "../components/Alert";
 
 export default {
   data() {
     return {
       title: this.$route.name,
-      showModal: false
+      showModal: false,
     };
+  },
+  computed: {
+    showAlert() {
+      return this.$store.state.isAlertActive
+    }
   },
   methods: {
     openModal() {
@@ -38,7 +45,8 @@ export default {
     Search,
     CartButton,
     Book,
-    Modal
+    Modal,
+    Alert
   }
 };
 </script>

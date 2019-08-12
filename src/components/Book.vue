@@ -2,7 +2,7 @@
   <div id="app">
       <div class="row">
     <div 
-        class="col-sm-4"
+        class="col-md-4 col-sm-6"
         v-for="(book, index) in this.$store.state.books"
         :key="index"
     >

@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="mr-sm-5"> {{calcOrders}} </span>
-    <a class="btn btn-success" id="cart-button">
+    <router-link  to="/cart" class="btn btn-success" id="cart-button">
       <svg
         id="i-cart"
         xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +18,7 @@
         <circle cx="25" cy="27" r="2"></circle>
         <circle cx="12" cy="27" r="2"></circle>
       </svg>
-    </a>
+    </router-link>
   </div>
 </template>
 

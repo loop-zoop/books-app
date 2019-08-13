@@ -24,17 +24,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      ordersMessage: "Your cart is empty"
-    };
-  },
   computed: {
     calcOrders() {
       return `Added ${this.$store.state.orders.items.length} items that cost ${this.$store.state.orders.totalPrice}UAH total`
     }
-  },
-  methods: {
   }
 };
 </script>

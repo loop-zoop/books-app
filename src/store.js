@@ -14,14 +14,13 @@ export default new Vuex.Store({
     },
     orderIndex: Number,
     isAlertActive: false,
-    alertMessage: 'Hi!'
+    alertMessage: '',
+    isLoading: false
   },
   mutations: {
-    fetchBooks(state, key_word) {
+    updateBooks(state, books) {
       state.books = []
-      fetch(`${state.api_url}?q=${key_word}`)
-        .then(response => response.json())
-        .then(json => state.books = json.items)
+      state.books = books
     },
     updateTotalPrice(state, totalPrice) {
       state.orders.totalPrice = totalPrice;
@@ -36,15 +35,28 @@ export default new Vuex.Store({
     },
     hideAlert(state) {
       state.isAlertActive = false
-      state.alertMessage = 'Hi!'
+      state.alertMessage = ''
+    },
+    startLoading(state) {
+      state.isLoading = true
+    },
+    stopLoading(state) {
+      state.isLoading = false
     }
   },
   actions: {
+    fetchBooks({commit, state}, keyWord) {
+      commit('startLoading')
+      fetch(`${state.api_url}?q=${keyWord}`)
+        .then(response => response.json())
+        .then(json => commit('updateBooks', json.items))
+        .then(commit('stopLoading'))
+    },
     calcPrices({ commit, state }) {
       let totalPrice = 0;
       state.orders.items.forEach(order => {
         if (order.saleInfo.saleability == "NOT_FOR_SALE") {
-          totalPrice += 0;
+          totalPrice += 20;
         } else {
           totalPrice += order.saleInfo.retailPrice.amount || 0;
         }

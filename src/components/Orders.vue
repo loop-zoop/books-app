@@ -13,15 +13,8 @@
         <th scope="row">{{index}}</th>
         <td><img :src="order.volumeInfo.imageLinks.smallThumbnail" alt=""></td>
         <td>{{order.volumeInfo.description || 'none'}}</td>
-        <td>{{order.saleInfo.retailPrice ? `${order.saleInfo.retailPrice.amount} UAH` : '0'}}</td>
+        <td>{{order.saleInfo.retailPrice ? `${order.saleInfo.retailPrice.amount} UAH` : '20'}}</td>
       </tr>
     </tbody>
   </table>
 </template>
-
-<script>
-export default {};
-</script>
-
-<style>
-</style>
